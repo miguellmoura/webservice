@@ -8,11 +8,11 @@ import jakarta.validation.constraints.NotNull
 data class CreateDepartmentRequest(
     @field:NotBlank val name: String?,
     @field:NotNull val description: String?,
-    @field:NotNull val officeRoutine: DepartmentRoutine?) {
+    @field:NotNull val officeRoutine: String?) {
     fun toDepartment() = Department(
                                     name = name!!,
                                     description = description!!,
-                                    officeRoutine = officeRoutine!!,
+                                    officeRoutine = DepartmentRoutine.valueOf(officeRoutine),
                                     id = null
                                     )
 }
