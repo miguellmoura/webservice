@@ -32,6 +32,10 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0")
 	implementation ("org.springframework.boot:spring-boot-starter-logging")
+	testImplementation("org.junit.jupiter:junit-jupiter:5.8.1")
+	testImplementation("org.mockito:mockito-core:4.3.1")
+	testImplementation("org.mockito:mockito-junit-jupiter:4.3.1")
+	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	implementation ("org.slf4j:slf4j-api")
 	implementation ("ch.qos.logback:logback-classic")
 

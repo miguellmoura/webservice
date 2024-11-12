@@ -27,4 +27,14 @@ class User(
         inverseJoinColumns = [JoinColumn(name="idRole")]
     )
     val roles: MutableSet<Role> = mutableSetOf()
-)
+) {
+    fun copy(id: Long): User {
+        return User(
+            id = id,
+            name = this.name,
+            email = this.email,
+            password = this.password,
+            roles = this.roles
+        )
+    }
+}
