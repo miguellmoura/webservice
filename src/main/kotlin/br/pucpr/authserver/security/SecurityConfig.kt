@@ -58,6 +58,7 @@ class SecurityConfig (private val jwtFilter: JwtTokenFilter) {
                 requests
                     .requestMatchers(antMatcher(HttpMethod.GET)).permitAll()
                     .requestMatchers(antMatcher(HttpMethod.POST)).permitAll()
+                    .requestMatchers(antMatcher(HttpMethod.PATCH)).permitAll()
                     .requestMatchers(antMatcher("/h2-console/**")).permitAll()
                     .anyRequest().authenticated()
             }.addFilterBefore(jwtFilter, BasicAuthenticationFilter::class.java)

@@ -1,5 +1,6 @@
 package br.pucpr.authserver.schedules
 
+import io.swagger.v3.oas.annotations.media.Schema
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.Id
@@ -23,5 +24,15 @@ class Schedule {
         this.date = date
         this.hourStart = hourStart
         this.hourEnd = hourEnd
+    }
+    fun copy(
+        id: Long? = this.id,
+        idCourt: Long? = this.idCourt,
+        idUser: Long? = this.idUser,
+        date: String? = this.date,
+        hourStart: String? = this.hourStart,
+        hourEnd: String? = this.hourEnd
+    ): Schedule {
+        return Schedule(id, idCourt, idUser, date, hourStart, hourEnd)
     }
 }

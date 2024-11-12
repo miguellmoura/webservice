@@ -5,14 +5,14 @@ import br.pucpr.authserver.users.SortDir
 import org.springframework.stereotype.Service
 
 @Service
-class ScheduleService (val repository: ScheduleRepository) {
+class ScheduleService(val repository: ScheduleRepository) {
 
     fun getAllSchedules(): List<Schedule> {
         return repository.findAll()
     }
 
-    fun getScheduleById(id: Long) : Schedule {
-        return repository.findById(id).get()
+    fun getScheduleById(id: Long): Schedule {
+        return repository.findById(id).orElseThrow { NoSuchElementException("Schedule not found with id: $id") }
     }
 
     fun createSchedule(schedule: CreateScheduleRequest): Schedule {
@@ -26,15 +26,8 @@ class ScheduleService (val repository: ScheduleRepository) {
         ))
     }
 
-    fun updateSchedule(schedule: CreateScheduleRequest): Schedule {
-        return repository.save(Schedule(
-            id = schedule.scheduleId,
-            idCourt = schedule.courtId,
-            idUser = schedule.userId,
-            date = schedule.date,
-            hourStart = schedule.start,
-            hourEnd = schedule.end
-        ))
+    fun updateSchedule(schedule: Schedule): Schedule {
+        return repository.save(schedule)
     }
 
     fun deleteSchedule(id: Long) {
