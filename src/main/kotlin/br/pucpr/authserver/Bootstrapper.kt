@@ -39,6 +39,16 @@ class Bootstrapper(
             admin.roles.add(adminRole)
             userRepository.save(admin)
             log.info("ADMIN user created!")
+
+            val commonUser = User(
+                email="user@gmail.com",
+                password="123456",
+                name="User"
+            )
+            val userRole = roleRepository.findByName("USER")
+            commonUser.roles.add(userRole!!)
+            userRepository.save(commonUser)
+            log.info("COMMON user created!")
         }
     }
 
