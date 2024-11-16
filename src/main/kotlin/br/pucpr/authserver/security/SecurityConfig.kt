@@ -27,7 +27,9 @@ import org.springframework.web.servlet.handler.HandlerMappingIntrospector
     scheme = "bearer",
     bearerFormat = "JWT"
 )
-class SecurityConfig (private val jwtFilter: JwtTokenFilter) {
+class SecurityConfig(
+    private val jwtFilter: JwtTokenFilter
+) {
     @Bean
     fun mvc(introspector: HandlerMappingIntrospector) =
         MvcRequestMatcher.Builder(introspector)
@@ -57,8 +59,8 @@ class SecurityConfig (private val jwtFilter: JwtTokenFilter) {
             .authorizeHttpRequests { requests ->
                 requests
                     .requestMatchers(antMatcher(HttpMethod.GET)).permitAll()
-                    .requestMatchers(antMatcher(HttpMethod.POST)).permitAll()
-                    .requestMatchers(antMatcher(HttpMethod.PATCH)).permitAll()
+                    .requestMatchers(antMatcher(HttpMethod.POST, "/users")).permitAll()
+                    .requestMatchers(antMatcher(HttpMethod.POST, "/users/login")).permitAll()
                     .requestMatchers(antMatcher("/h2-console/**")).permitAll()
                     .anyRequest().authenticated()
             }.addFilterBefore(jwtFilter, BasicAuthenticationFilter::class.java)

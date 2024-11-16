@@ -2,13 +2,16 @@ package br.pucpr.authserver.schedules
 
 import br.pucpr.authserver.schedules.requests.CreateScheduleRequest
 import br.pucpr.authserver.users.SortDir
+import br.pucpr.authserver.users.User
+import org.springframework.data.domain.Sort
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
 @Service
 class ScheduleService(val repository: ScheduleRepository) {
 
-    fun getAllSchedules(): List<Schedule> {
-        return repository.findAll()
+    fun findByIdOrNull(id: Long): List<Schedule>? {
+        return repository.findByIdCourt(id)
     }
 
     fun getScheduleById(id: Long): Schedule {
@@ -34,7 +37,15 @@ class ScheduleService(val repository: ScheduleRepository) {
         repository.deleteById(id)
     }
 
-    fun findScheduleByCourtId(courtId: Long, sortDir: SortDir): Schedule {
-        return repository.findByIdCourt(courtId)
+    fun list(sortDir: SortDir, idCourt: Long?): List<Schedule>
+    {
+        return if (idCourt != null) {
+            repository.findByIdCourt(idCourt) ?: emptyList()
+        } else {
+            when (sortDir) {
+                SortDir.ASC -> repository.findAll()
+                SortDir.DESC -> repository.findAll(Sort.by("id").reverse())
+            }
+        }
     }
 }

@@ -1,6 +1,5 @@
 package br.pucpr.authserver.security
 
-import br.pucpr.authserver.security.Jwt.Companion.toAuthentication
 import br.pucpr.authserver.users.User
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.jackson.io.JacksonDeserializer
@@ -34,23 +33,28 @@ class Jwt {
                 .compact()
         }
 
-    fun extract(request: HttpServletRequest): Authentication? {
+    fun extract(req: HttpServletRequest): Authentication? {
         try {
-            val header = request.getHeader(AUTHORIZATION)
+            val header = req.getHeader(AUTHORIZATION)
             if (header == null || !header.startsWith("Bearer ")) return null
             val token = header.removePrefix("Bearer ")
-            val claims = Jwts.parser().json(JacksonDeserializer(mapOf(USER_FIELD to UserToken::class.java)))
+            val claims = Jwts.parser()
+                .json(JacksonDeserializer(
+                    mapOf(USER_FIELD to UserToken::class.java))
+                )
                 .verifyWith(Keys.hmacShaKeyFor(SECRET.toByteArray()))
                 .build()
                 .parseSignedClaims(token).payload
-            // aplicamos nossas próprias regras de segurança
+            //Aplicamos nossas próprias regras de segurança
             if (claims.issuer != ISSUER) {
-                log.debug("Token rejected: issuer is not the same $ISSUER != ${claims.issuer}")
+                log.debug("Token rejected: $ISSUER != ${claims.issuer}")
                 return null
             }
-            return claims.get("user", UserToken::class.java).toAuthentication()
+            return claims
+                .get(USER_FIELD, UserToken::class.java)
+                .toAuthentication()
         } catch (e: Throwable) {
-            log.debug("Token rejected: ", e)
+            log.debug("Token rejected", e)
             return null
         }
     }
@@ -68,12 +72,13 @@ class Jwt {
             ZonedDateTime.now(ZoneOffset.UTC)
         private fun ZonedDateTime.toDate() =
             Date.from(this.toInstant())
+
         private fun UserToken.toAuthentication(): Authentication {
             val authorities = this.roles.map {
-                SimpleGrantedAuthority("ROLE_$it")
-            }
-            return UsernamePasswordAuthenticationToken(this, null, authorities)
-
+                SimpleGrantedAuthority("ROLE_$it") }
+            return UsernamePasswordAuthenticationToken.authenticated(
+                this, id, authorities)
         }
+
     }
 }
