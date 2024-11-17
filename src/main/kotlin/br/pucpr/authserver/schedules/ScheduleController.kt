@@ -73,12 +73,20 @@ class ScheduleController(val service: ScheduleService, val courtService: CourtSe
         logger.info("Updating schedule time for ID: $scheduleId")
         val schedule = service.getScheduleById(scheduleId)
 
+        if (service.getScheduleByTime(
+                updateScheduleRequest.startTime.toString(),
+                updateScheduleRequest.endTime.toString(),
+                updateScheduleRequest.date,
+                schedule.idCourt
+            ) != null
+        ) {
+            throw BadRequestException("Schedule already exists for this time and date!")
+        }
+
         val updatedSchedule = schedule.copy(
-
-            // ver se já existe um agendamento pra esse horário
-
             hourStart = updateScheduleRequest.startTime.toString(),
-            hourEnd = updateScheduleRequest.endTime.toString()
+            hourEnd = updateScheduleRequest.endTime.toString(),
+            date = updateScheduleRequest.date
         )
 
         val savedSchedule = service.updateSchedule(updatedSchedule)

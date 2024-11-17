@@ -5,13 +5,17 @@ data class ScheduleResponse(
     val id: Long,
     val userId: Long,
     val courtId: Long,
-    val date: String
+    val date: String,
+    val hourStart: String,
+    val hourEnd: String
 ) {
     constructor(schedule: Schedule): this(
         id = schedule.id!!,
         userId = schedule.idUser!!,
         courtId = schedule.idCourt!!,
-        date = schedule.date!!
+        date = schedule.date!!,
+        hourStart = schedule.hourStart!!,
+        hourEnd = schedule.hourEnd!!
     )
 }
 

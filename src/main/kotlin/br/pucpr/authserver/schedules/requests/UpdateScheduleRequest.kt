@@ -9,4 +9,7 @@ data class UpdateScheduleRequest(
 
     @Schema(example = "17:25:00")
     val endTime: LocalTime,
+
+    @Schema(example = "2021-10-10")
+    val date: String
 )

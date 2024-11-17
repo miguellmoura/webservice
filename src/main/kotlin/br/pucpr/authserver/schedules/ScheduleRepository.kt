@@ -17,6 +17,6 @@ interface ScheduleRepository: JpaRepository<Schedule, Long> {
                 "and s.hourEnd <= :endTime " +
                 "and s.idCourt = :courtId"
     )
-    fun findByTime(startTime: String, endTime: String, date: String, courtId: Long): Schedule?
+    fun findByTime(startTime: String, endTime: String, date: String, courtId: Long?): Schedule?
 
 }
