@@ -17,5 +17,16 @@ data class ScheduleResponse(
         hourStart = schedule.hourStart!!,
         hourEnd = schedule.hourEnd!!
     )
+
+    fun toSchedule(): Schedule {
+        return Schedule(
+            id = id,
+            idCourt = courtId,
+            idUser = userId,
+            date = date,
+            hourStart = hourStart,
+            hourEnd = hourEnd
+        )
+    }
 }
 
