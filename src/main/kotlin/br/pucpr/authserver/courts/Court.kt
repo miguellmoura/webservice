@@ -1,5 +1,6 @@
 package br.pucpr.authserver.courts
 
+import br.pucpr.authserver.schedules.Schedule
 import io.swagger.v3.oas.annotations.media.Schema
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
@@ -21,4 +22,14 @@ class Court(
 
     @Schema(description = "Status da quadra", example = "Disponível")
     var status: String? = null
+
 )
+{
+    fun copy(
+        esporte: String? = this.esporte,
+        numBloco: Int? = this.numBloco,
+        status: String? = this.status,
+    ): Court {
+        return Court(id, esporte, numBloco, status)
+    }
+}

@@ -26,4 +26,8 @@ class CourtService (
     fun createCourt(court: Court): Court {
         return repository.save(court)
     }
+
+    fun updateCourt(court: Court): Court {
+        return repository.save(court)
+    }
 }

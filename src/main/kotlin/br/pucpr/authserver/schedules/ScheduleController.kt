@@ -34,18 +34,23 @@ class ScheduleController(val service: ScheduleService, val courtService: CourtSe
 
 
     @GetMapping("/schedule/{scheduleId}")
-    fun getScheduleById(id: Long, @PathVariable scheduleId: Long): Schedule {
+    fun getScheduleById(@PathVariable scheduleId: Long): Schedule {
         logger.info("Fetching schedule with ID: $scheduleId")
-        return service.getScheduleById(id)
+        return service.getScheduleById(scheduleId)
     }
 
     @PostMapping("/schedule")
     @SecurityRequirement(name = "AuthServer")
     fun createSchedule(@RequestBody @Valid schedule: CreateScheduleRequest): ResponseEntity<Schedule> {
 
-        if (courtService.getCourtById(schedule.courtId).isEmpty) {
-            throw BadRequestException("Court with ID ${schedule.courtId} not found!")
+        val court = courtService.getCourtById(schedule.courtId).orElseThrow {
+            BadRequestException("Court with ID ${schedule.courtId} not found!")
         }
+
+        if (court.status == "Indisponível") {
+            throw BadRequestException("Court is inactive!")
+        }
+
 
         if (service.getScheduleByTime(schedule.start, schedule.end, schedule.date, schedule.courtId) != null) {
             throw BadRequestException("Schedule already exists for this time and date!")
