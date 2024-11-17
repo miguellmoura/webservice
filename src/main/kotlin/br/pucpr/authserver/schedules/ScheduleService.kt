@@ -48,4 +48,8 @@ class ScheduleService(val repository: ScheduleRepository) {
             }
         }
     }
+
+    fun getScheduleByTime(startTime: String, endTime: String, date: String, idCourt: Long): Schedule? {
+        return repository.findByTime(startTime, endTime, date, idCourt)
+    }
 }

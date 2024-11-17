@@ -26,7 +26,6 @@ class Schedule {
         this.hourEnd = hourEnd
     }
     fun copy(
-        id: Long? = this.id,
         idCourt: Long? = this.idCourt,
         idUser: Long? = this.idUser,
         date: String? = this.date,

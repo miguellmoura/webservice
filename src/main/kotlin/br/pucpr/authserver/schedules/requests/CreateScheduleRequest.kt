@@ -5,7 +5,7 @@ import io.swagger.v3.oas.annotations.media.Schema
 
 data class CreateScheduleRequest(
     @Schema(description = "Campo opcional", example = "")
-    val scheduleId: Long,
+    val scheduleId: Long?,
 
     @Schema (description = "Identificador da quadra agendada", example = "1")
     val courtId: Long,

@@ -47,6 +47,10 @@ class ScheduleController(val service: ScheduleService, val courtService: CourtSe
             throw BadRequestException("Court with ID ${schedule.courtId} not found!")
         }
 
+        if (service.getScheduleByTime(schedule.start, schedule.end, schedule.date, schedule.courtId) != null) {
+            throw BadRequestException("Schedule already exists for this time and date!")
+        }
+
         logger.info("Creating new schedule: $schedule")
         val newSchedule = CreateScheduleRequest(
             scheduleId = schedule.scheduleId,
@@ -70,6 +74,9 @@ class ScheduleController(val service: ScheduleService, val courtService: CourtSe
         val schedule = service.getScheduleById(scheduleId)
 
         val updatedSchedule = schedule.copy(
+
+            // ver se já existe um agendamento pra esse horário
+
             hourStart = updateScheduleRequest.startTime.toString(),
             hourEnd = updateScheduleRequest.endTime.toString()
         )
