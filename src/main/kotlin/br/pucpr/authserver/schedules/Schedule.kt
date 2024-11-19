@@ -1,5 +1,6 @@
 package br.pucpr.authserver.schedules
 
+import br.pucpr.authserver.schedules.responses.ScheduleResponse
 import io.swagger.v3.oas.annotations.media.Schema
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
@@ -34,4 +35,22 @@ class Schedule {
     ): Schedule {
         return Schedule(id, idCourt, idUser, date, hourStart, hourEnd)
     }
+
+//    fun Schedule.toResponse() = ScheduleResponse(
+//        id = this.id,
+//        userId = this.idUser,
+//        courtId = this.idCourt,
+//        date = this.date,
+//        hourStart = this.hourStart,
+//        hourEnd = this.hourEnd
+//    )
+
+//    fun ScheduleResponse.toSchedule() = Schedule(
+//        id = this.id,
+//        idUser = this.userId,
+//        idCourt = this.courtId,
+//        date = this.date,
+//        hourStart = this.hourStart,
+//        hourEnd = this.hourEnd
+//    )
 }
