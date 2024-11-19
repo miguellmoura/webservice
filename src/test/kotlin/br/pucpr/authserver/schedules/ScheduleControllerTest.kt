@@ -135,16 +135,20 @@ class ScheduleControllerTest {
     @Test
     fun `should return schedules by court`() {
         val courtId = 1L
-        val expectedSchedules = listOf(
+        val schedules = listOf(
             Schedule(id = 1, idCourt = courtId, idUser = 1, date = "2021-10-10", hourStart = "10:00", hourEnd = "11:00"),
             Schedule(id = 2, idCourt = courtId, idUser = 2, date = "2021-10-10", hourStart = "11:00", hourEnd = "12:00")
         )
-        Mockito.`when`(service.list(SortDir.ASC, courtId)).thenReturn(expectedSchedules)
+
+        Mockito.`when`(service.list(SortDir.ASC, courtId)).thenReturn(schedules)
+
+        val expectedResponses = schedules.map { ScheduleResponse(it) }
 
         val result = controller.list(SortDir.ASC.toString(), courtId)
 
-        assertEquals(expectedSchedules, result.body)
+        assertEquals(expectedResponses, result.body)
     }
+
 
 
 }
